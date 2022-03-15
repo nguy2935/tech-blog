@@ -6,15 +6,15 @@ const exphbs = require("express-handlebars");
 const session = require("express-session");
 const app = express();
 const PORT = process.env.PORT || 3001;
-const SequielizeStore = rqeuire("connect-session-sequelize")(session.Store);
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 const sess {
     secret: "Super secret",
     cookie: {},
     resave: false,
     saveUnintialized: true,
-    store: new SequielizeStore({
-        db: sequelize,
+    store: new SequelizeStore({
+        db: sequelize
     })
 };
 
@@ -27,4 +27,4 @@ app.set("view engine", "handlebars");
 
 sequelize.sync({froce:false}).then(() => {
     app.listen(PORT, () => console.log("Now listening"));
-})
+});
