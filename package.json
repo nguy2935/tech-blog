@@ -1,0 +1,23 @@
+{
+  "name": "tech-blog",
+  "version": "1.0.0",
+  "description": "* [Description](#description)\r * [Deployment](#deployment)\r * [User Story](#user-story)\r * [Acceptance Criteria](#acceptance-criteria)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguy2935/tech-blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguy2935/tech-blog/issues"
+  },
+  "homepage": "https://github.com/nguy2935/tech-blog#readme",
+  "dependencies": {
+    "connect-session-sequelize": "^7.1.2"
+  }
+}
