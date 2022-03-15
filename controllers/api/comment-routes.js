@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
         console.log(err);
         res.status(500).json(err);
     });
-});
+})
 .then(dbPostData => {
     const posts = dbPostData.map(post => post.get({plain:true}));
     console.log(req.session.loggedIn);

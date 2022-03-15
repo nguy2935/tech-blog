@@ -1,13 +1,16 @@
-async function newPost(event) {
+async function userSignupForm(event) {
     event.preventDefault();
 
-    const title = document.querySelector("#post-title").value;
-    const post_content = document.querySelector("#post-content").value;
+    const email = document.querySelector("#email-signup").value.trim();
+    const username = document.querySelector("#username-signup").value.trim();
+    const password = document.querySelector("#password-signup").value.trim();
 
-    const response = await fetch("/api/posts", {
-        method: "POST",
+    const response = await fetch("/api/users", {
+        method: "post",
         body: JSON.stringify({
-            title, post_content
+            email,
+            username,
+            password
         }),
         headers: {
             "Content-Type": "application/json"
@@ -15,10 +18,10 @@ async function newPost(event) {
     });
 
     if (response.ok) {
-        document.location.replace("dashboard");
+        document.location.replace("/dashboard");
     } else {
         alert(response.statusText);
     }
 };
 
-document.querySelector(".new-post-form").addEventListener("submit", newPost);
+document.querySelector(".userSignup").addEventListener("submit", userSignupForm);
