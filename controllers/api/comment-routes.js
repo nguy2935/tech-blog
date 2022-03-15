@@ -1,28 +1,21 @@
-const sequelize = require("../config/connection");
 const router = require("express").Router();
-const {User, Post, Comment} = require("../models");
+const withAuth = require("../../utils/auth");
+const {Comment, Post, User} = require("../../models");
+
+// all comments
 router.get('/', (req, res) => {
-    Post.findAll({
+    Comment.findAll({
         attributes: [
-            "id",
-            "title",
-            "info",
-            "created_at"
-        ],
-        include: [{
-            model: Comment,
-            attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
-            include: {
-                model: User,
-                attributes: ["username"]
-            }
-        },
-        {
-        model: User,
-        attributes: ["username"]
-    }
-]
-})
+            "comment_text",
+            "user_id",
+            "post_id"]
+    })
+    .then(dbCommentData => res.json(dbCommentData))
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
 .then(dbPostData => {
     const posts = dbPostData.map(post => post.get({plain:true}));
     console.log(req.session.loggedIn);
@@ -33,9 +26,7 @@ router.get('/', (req, res) => {
     res.status(500).json(err);
 });
 
-});
-
-router.get("/login", (req, res) => {
+router.get("/:id", (req, res) => {
     if(req.session.loggedIn) {
         res.redirect("/");
         return;
@@ -44,15 +35,14 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/post/:id", (req, res) => {
-    Post.findOne({
+    Comment.findOne({
         where: {
             id: req.params.id
         },
         attributes: [
-            "id",
-            "info",
-            "title",
-            "created_at"
+            "user_id", 
+            "comment_text", 
+            "post_id"
         ],
         include: [
             {
@@ -71,7 +61,7 @@ router.get("/post/:id", (req, res) => {
 })
 .then(dbPostData => {
     if (!dbPostData) {
-        res.status(404).json({ message: "No post found with this id"});
+        res.status(404).json({ message: "No comment found with this id"});
         return;
     }
     const post = dbPostData.get({ plain: true});
@@ -82,4 +72,18 @@ router.get("/post/:id", (req, res) => {
     res.status(500).json(err);
     });
 });
+
+router.post("/", (req, res) => {
+    Comment.create({
+        comment_text: req.body.comment_text,
+        user_id: req.session.user_id,
+        post_id: req.body.post_id
+        })
+        .then(dbCommentData => res.json(dbCommentData))
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+    });
+
 module.exports = router;

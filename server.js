@@ -18,16 +18,6 @@ const sess = {
     })
 };
 
-// const sess {
-//     secret: "Super secret",
-//     cookie: {},
-//     resave: false,
-//     saveUnintialized: true,
-//     store: new SequelizeStore({
-//         db: sequelize
-//     })
-// };
-
 app.use(session(sess));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
